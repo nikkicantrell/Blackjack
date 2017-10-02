@@ -64,9 +64,13 @@ function displayTotal() {
         }
         total += cardVal[val];
     }
-    if (totalA !== total) {
+    if (totalA !== total && totalA < 22) {
         totalEl.innerHTML += (total.toString() + ' or ' + totalA.toString());
     } else {
         totalEl.innerHTML += (total.toString());
+    }
+    if (total > 21) {
+        setTimeout(function() { alert('You lost.'); }, 20);
+        deal();
     }
 }
