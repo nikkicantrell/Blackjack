@@ -10,7 +10,7 @@ var cards = {'0':'2h', '1':'3h', '2':'4h', '3':'5h', '4':'6h', '5':'7h',
 '46':'9c', '47':'10c', '48':'Jc', '49':'Qc', '50':'Kc', '51':'Ac'};
 var cardVal = {'2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9,
 '1':10, 'J':10, 'Q':10, 'K':10, 'A':1};
-var done = false;
+var done = true;
 function deal() {
     done = false;
     playerCards = [];
@@ -79,6 +79,9 @@ function overSixteen(vals) {
     return vals.filter(function(elem, i, array) {
         return elem > 16;
     });
+}
+function split() {
+
 }
 function newCard() {
     return cards[Math.floor(Math.random()*52)];
