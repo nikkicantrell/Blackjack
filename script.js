@@ -24,17 +24,17 @@ function deal() {
         var card = newCard();
         if (i%2 == 0) {
             playerCards.push(card);
-            cardEl.src = 'cards/' + card + '.png';
+            cardEl.src = 'images/cards/' + card + '.png';
             player.appendChild(cardEl);
         } else {
             dealerCards.push(card);
             if (dealerCards.length < 2) {
-                cardEl.src = 'cards/down.jpg'
+                cardEl.src = 'images/cards/down.jpg'
                 cardEl.width = '61';
                 cardEl.height = '80';
                 cardEl.id = 'flipped';
             } else {
-                cardEl.src = 'cards/' + card + '.png';
+                cardEl.src = 'images/cards/' + card + '.png';
             }
             dealer.appendChild(cardEl);
         }
@@ -58,7 +58,7 @@ function stand() {
         alert("You must deal yourself a new hand.");
     } else {
         var flipped = document.getElementById("flipped");
-        var card = 'cards/' + dealerCards[0] + '.png';
+        var card = 'images/cards/' + dealerCards[0] + '.png';
         flipped.src = card;
         var totalEl = document.getElementById("totaldeal");
         var totals = displayTotal(totalEl, dealerCards);
@@ -139,7 +139,7 @@ function hitHelper(player, cards) {
     var cardEl = document.createElement("img");
     var card = newCard();
     cards.push(card);
-    cardEl.src = 'cards/' + card + '.png';
+    cardEl.src = 'images/cards/' + card + '.png';
     player.appendChild(cardEl);
     return cards;
 }
