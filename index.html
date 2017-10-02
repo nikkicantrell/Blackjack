@@ -13,8 +13,14 @@
         <div class="player" id="player">
           <p id="total"></p>
         </div>
-        <input type="image" src="deck.jpg" width="114" height="150"
-        alt="Deal" onclick="deal()" />
+        <div class="buttons">
+          <input type="image" src="deck.jpg" width="38" height="50"
+          alt="Deal" onclick="deal()" title="Deal"/>
+          <input type="image" src="blackjack-hit.png" width="38" height="50"
+          alt="Hit" onclick="hit()" title="Hit"/>
+          <input type="image" src="blackjack-stand.png" width="38" height="50"
+          alt="Stand" onclick="stand()" title="Stand"/>
+        </div>
       </div>
     </div>
     <script type="text/javascript" src="script.js"></script>

@@ -27,3 +27,9 @@ div {
 .player {
     height:25%;
 }
+.buttons {
+    width:100%;
+}
+.hit {
+    height:50;
+}
