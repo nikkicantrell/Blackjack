@@ -40,7 +40,7 @@ function deal() {
         }
     }
     var totalEl = document.getElementById("total");
-    checkBust(displayTotal(totalEl, playerCards)[0], "You busted, the dealer wins.");
+    displayTotal(totalEl, playerCards);
 }
 function hit() {
     if (done) {
@@ -50,7 +50,7 @@ function hit() {
         var cards = hitHelper(player, playerCards);
         playerCards = cards;
         var totalEl = document.getElementById("total");
-        checkBust(displayTotal(totalEl, playerCards)[0], "You busted, the dealer wins");
+        checkBust(displayTotal(totalEl, playerCards), "You busted, the dealer wins");
     }
 }
 function stand() {
@@ -62,10 +62,10 @@ function stand() {
         flipped.src = card;
         var totalEl = document.getElementById("totaldeal");
         var totals = displayTotal(totalEl, dealerCards);
-        if (totals[1] > 16 || totals[0] > 16) {
+        if (overSixteen(totals).length > 0) {
             winner(totals);
         } else {
-            while (totals[1] < 17 && totals[0] < 17) {
+            while (overSixteen(totals).length < 1) {
                 var dealer = document.getElementById("dealer");
                 var cards = hitHelper(dealer, dealerCards);
                 dealerCards = cards;
@@ -75,35 +75,59 @@ function stand() {
         }
     }
 }
+function overSixteen(vals) {
+    return vals.filter(function(elem, i, array) {
+        return elem > 16;
+    });
+}
 function newCard() {
     return cards[Math.floor(Math.random()*52)];
 }
 function displayTotal(totalEl, cards) {
     totalEl.innerHTML = '';
     var totals = getTotals(cards);
-    totalEl.innerHTML += totals[0].toString();
-    if (totals[1] != totals[0] && totals[1] < 22) {
-        totalEl.innerHTML += (' or ' + totals[1].toString());
+    for (i = 0; i < totals.length; i++) {
+        totalEl.innerHTML += (' or ' + totals[i].toString());
     }
+    totalEl.innerHTML = totalEl.innerHTML.substring(4, totalEl.innerHTML.length)
     return totals;
 }
 function getTotals(cards) {
-    var total = 0;
-    var totalA = 0;
+    var totals = [0];
     for(i = 0; i < cards.length; i++) {
+        console.log(totals);
         var val = cards[i].substring(0, 1);
+        console.log(val)
         if (val == 'A') {
-            totalA = total + 11;
+            var newTotals = [];
+            for (j = 0; j < totals.length; j++) {
+                newTotals.push(totals[j] + 11);
+                totals[j] += 1;
+            }
+            totals = totals.concat(newTotals)
+            totals = removeDupAndBusts(totals);
         } else {
-            totalA += cardVal[val];
+            for (j = 0; j < totals.length; j++) {
+                totals[j] += cardVal[val];
+            }
         }
-        total += cardVal[val];
     }
-    totals = [total, totalA];
+    totals = removeDupAndBusts(totals);
     return totals;
 }
-function checkBust(total, message) {
-    if (total > 21) {
+function removeDupAndBusts(arr) {
+    return arr.filter(function(elem, i, array) {
+        return array.indexOf(elem) == i && (array[i] < 22 || array.length < 2);
+    });
+}
+function checkBust(totals, message) {
+    var min = totals[0];
+    for (i = 0; i < totals.length; i++) {
+        if (totals[i] < min) {
+            min = totals[i]
+        }
+    }
+    if (min > 21) {
         alert(message);
         done = true;
     }
