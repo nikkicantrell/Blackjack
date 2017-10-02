@@ -21,3 +21,9 @@ div {
   min-width: 75%;
   text-align: center;
 }
+.dealer {
+    height:25%;
+}
+.player {
+    height:25%;
+}
