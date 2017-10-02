@@ -13,12 +13,11 @@ div {
   height: 100%;
   width: 100%;
 }
-
-
 .container {
   display: flex;
 }
-
 .main {
+  padding-left: 0px;
   min-width: 75%;
+  text-align: center;
 }
