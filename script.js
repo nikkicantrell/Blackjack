@@ -127,7 +127,9 @@ function winner() {
     if (playerTotals[1] < 22) {
         player = playerTotals[1];
     }
-    if (dealer > player) {
+    if (dealer > 21) {
+        alert("The dealer busted, you win.")
+    } else if (dealer > player) {
         alert("The dealer won.")
     } else if (player > dealer) {
         alert("You won!")
