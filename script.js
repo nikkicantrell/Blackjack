@@ -25,7 +25,7 @@ function deal() {
     for (i = 0; i < 4; i++) {
         var cardEl = document.createElement("img");
         //var card = newCard();
-        var card = '7h';
+        var card = '7h'; //for testing split
         if (i%2 == 0) {
             playerCards.push(card);
             cardEl.src = 'images/cards/' + card + '.png';
