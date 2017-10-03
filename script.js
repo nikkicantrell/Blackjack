@@ -11,6 +11,9 @@ var cards = {'0':'2h', '1':'3h', '2':'4h', '3':'5h', '4':'6h', '5':'7h',
 var cardVal = {'2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9,
 '1':10, 'J':10, 'Q':10, 'K':10, 'A':1};
 var done = true;
+var splitMode = 0;
+var hand = false; //used in split mode, holds which hand is being used
+var tempCards = []; //used in split mode to hold second hand cards
 function deal() {
     done = false;
     playerCards = [];
@@ -21,7 +24,8 @@ function deal() {
     player.innerHTML = '<p id="total"></p>';
     for (i = 0; i < 4; i++) {
         var cardEl = document.createElement("img");
-        var card = newCard();
+        //var card = newCard();
+        var card = '7h';
         if (i%2 == 0) {
             playerCards.push(card);
             cardEl.src = 'images/cards/' + card + '.png';
@@ -47,6 +51,9 @@ function hit() {
         alert("You must deal yourself a new hand.");
     } else {
         var player = document.getElementById("player");
+        if (splitMode > 0) {
+            player = hand;
+        }
         var cards = hitHelper(player, playerCards);
         playerCards = cards;
         var totalEl = document.getElementById("total");
@@ -56,6 +63,13 @@ function hit() {
 function stand() {
     if (done) {
         alert("You must deal yourself a new hand.");
+    } else if (splitMode > 0) {
+        hand = document.getElementById("two");
+        playerCards = tempCards;
+        splitMode += 1;
+        if (splitMode > 2) {
+            splitMode = 0;
+        }
     } else {
         var flipped = document.getElementById("flipped");
         var card = 'images/cards/' + dealerCards[0] + '.png';
@@ -81,7 +95,33 @@ function overSixteen(vals) {
     });
 }
 function split() {
-
+    if (done) {
+        alert("You must deal yourself a new hand.");
+    } else if (playerCards.length > 2) {
+        alert("You can only split before you start hitting.");
+    } else if (playerCards[0].substring(0, 1) !== playerCards[1].substring(0, 1)) {
+        alert("You can only split when the cards have the same rank");
+    } else {
+        splitMode = 1;
+        var player = document.getElementById("player");
+        player.innerHTML = '<p id="one"></p> <p id="two"></p>'
+        alert("When splitting, use the hit button until you are done hitting "+
+        "the first hand, then use the stand button once to indicate you are "+
+        "ready to hit on the next hand, then hit/stand normally")
+        var one = document.getElementById("one");
+        var two = document.getElementById("two");
+        var oneCards = [playerCards[0]];
+        var twoCards = [playerCards[1]];
+        var cardOne = document.createElement("img");
+        cardOne.src = 'images/cards/' + oneCards[0] + '.png';
+        one.appendChild(cardOne);
+        var cardTwo = document.createElement("img");
+        cardTwo.src = 'images/cards/' + twoCards[0] + '.png';
+        two.appendChild(cardTwo);
+        hand = one;
+        playerCards = oneCards;
+        tempCards = twoCards;
+    }
 }
 function newCard() {
     return cards[Math.floor(Math.random()*52)];
@@ -98,9 +138,7 @@ function displayTotal(totalEl, cards) {
 function getTotals(cards) {
     var totals = [0];
     for(i = 0; i < cards.length; i++) {
-        console.log(totals);
         var val = cards[i].substring(0, 1);
-        console.log(val)
         if (val == 'A') {
             var newTotals = [];
             for (j = 0; j < totals.length; j++) {
